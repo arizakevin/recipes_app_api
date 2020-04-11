@@ -1,7 +1,9 @@
 const register = (request, response, pool, bcrypt) => {
 	const { name, email, password } = request.body
 	const hash = bcrypt.hashSync(password);
-
+	if ( !name || !email || !password ) {
+		return response.status(400).json('Incorrect form submission')
+	}
 	pool.query('SELECT EXISTS (SELECT * FROM users WHERE email = $1)', [email], (error, results) => {
 		if (error) {
 			throw error
