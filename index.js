@@ -22,7 +22,7 @@ if (process.env.DATABASE_URL) {
 
 const { Pool } = require('pg')
 
-let connString = process.env.DATABASE_URL || 'postgresql://me:password@localhost:5432/recipes_app_db';
+let connString = process.env.DATABASE_URL || 'postgresql://me:password@postgresql-vertical-29420/recipes_app_db';
 const pool = new Pool({
   connectionString : connString
 });
