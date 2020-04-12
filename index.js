@@ -1,10 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 const bcrypt = require('bcrypt-nodejs')
-const app = express()
-app.use(cors())
-app.use(express.urlencoded({extended: false}))
-app.use(express.json())
 
 const { signin } = require('./queries/signin')
 const { register } = require('./queries/register')
@@ -27,11 +23,19 @@ const { Pool } = require('pg')
 
 const connString = process.env.DATABASE_URL;
 const pool = new Pool({
-  connectionString : connString,
-  ssl: true
+  client: 'pg,',
+  connection: {
+  	connectionString : connString,
+  	ssl: true
+  }
 });
 
 console.log('connString: ', connString)
+
+const app = express()
+app.use(cors())
+app.use(express.urlencoded({extended: false}))
+app.use(express.json())
 
 app.get('/', (req, res) => {
   res.json('Node.js, Express, and Postgres API')
