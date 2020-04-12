@@ -16,15 +16,16 @@ const { getUserRecipes } = require('./queries/getUserRecipes')
 
 let pg = require('pg')
 
-if (process.env.DATABASE_URL) {
+/*if (process.env.DATABASE_URL) {
   pg.defaults.ssl = true;
-}
+}*/
  
 const { Pool } = require('pg')
 
-const connString = /*process.env.DATABASE_URL ||*/ 'postgresql://me:password@postgresql-vertical-29420/recipes_app_db';
+const connString = process.env.DATABASE_URL;
 const pool = new Pool({
-  connectionString : connString
+  connectionString : connString,
+  ssl: true;
 });
 
 console.log('connString: ', connString)
