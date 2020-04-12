@@ -34,7 +34,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.json({ info: 'Node.js, Express, and Postgres API' })
+  res.json('Node.js, Express, and Postgres API')
 })
 app.post('/signin', (req, res) => { signin(req, res, pool, bcrypt) })
 app.post('/register', (req, res) => { register(req, res, pool, bcrypt) })
