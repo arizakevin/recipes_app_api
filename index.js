@@ -22,13 +22,30 @@ let pg = require('pg')
 const { Pool } = require('pg')
 
 const connString = process.env.DATABASE_URL;
+
+
+
 const pool = new Pool({
   client: 'pg',
   connection: {
   	connectionString : connString,
-  	ssl: true
+  	ssl: {
+  	  rejectUnauthorized: false,
+  	  ca: fs.readFileSync('/path/to/server-certificates/root.crt').toString(),
+  	  key: fs.readFileSync('/path/to/client-key/postgresql.key').toString(),
+  	  cert: fs.readFileSync('/path/to/client-certificates/postgresql.crt').toString(),
+  	}
   }
 });
+
+pool
+  .connect()
+  .then(client => {
+    console.log('connected')
+    client.release()
+  })
+  .catch(err => console.error('error connecting', err.stack))
+  .then(() => pool.end())
 
 console.log('connString: ', connString)
 
