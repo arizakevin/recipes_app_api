@@ -1,3 +1,5 @@
+const cors = require('cors')
+
 const register = (request, response, pool, bcrypt) => {
 	const { name, email, password } = request.body
 	const hash = bcrypt.hashSync(password);
