@@ -27,6 +27,7 @@ const pool = new Pool({
   connectionString : connString,
   ssl: true
 });
+//fixing syntax error
 
 console.log('connString: ', connString)
 
