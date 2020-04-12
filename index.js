@@ -17,9 +17,9 @@ const { getUserRecipes } = require('./queries/getUserRecipes')
 let pg = require('pg')
 
 if (process.env.DATABASE_URL) {
-  pg.defaults.ssl = true;
+  pg.defaults.ssl = false;
 }
-
+ 
 const { Pool } = require('pg')
 
 let connString = process.env.DATABASE_URL || 'postgresql://me:password@postgresql-vertical-29420/recipes_app_db';
