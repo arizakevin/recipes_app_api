@@ -1,48 +1,38 @@
 const express = require('express')
 const cors = require('cors')
 const bcrypt = require('bcrypt-nodejs')
+const knex = require('knex');
 
-const { signin } = require('./queries/signin')
-const { register } = require('./queries/register')
+const { handleSignin } = require('./queries/signin')
+const { handleRegister } = require('./queries/register')
 const { getRecipes } = require('./queries/getRecipes')
 const { saveUserRecipes } = require('./queries/saveUserRecipes')
-const { recipeSaved } = require('./queries/recipeSaved')
-const { getUserRecipes } = require('./queries/getUserRecipes')
+const { checkIfRecipeExists } = require('./queries/recipeSaved')
+const { handleUserRecipes } = require('./queries/userRecipes')
 //const { getUsers } = require('./queries/getUsers')
 //const { getUserById } = require('./queries/getUserById')
 //const { updateUser } = require('./queries/updateUser')
 //const { deleteUser } = require('./queries/deleteUser')
 
-let pg = require('pg')
-
-/*if (process.env.DATABASE_URL) {
-  pg.defaults.ssl = true;
-}*/
- 
-const { Pool } = require('pg')
-
-const connString = process.env.DATABASE_URL;
-
-
-
-const pool = new Pool({
+const db = knex({
   client: 'pg',
   connection: {
-  	connectionString : connString,
-  	ssl: true
+    host : '127.0.0.1',
+    user : 'me',
+    password : 'password',
+    database : 'recipes_app_db'
+    /*
+    connectionString: process.env.DATABASE_URL, 
+    ssl: true
+    */
   }
 });
 
-pool
-  .connect()
-  .then(client => {
-    console.log('connected')
-    client.release()
-  })
-  .catch(err => console.error('error connecting', err.stack))
-  .then(() => pool.end())
+db.select('*').from('users').then(data => {
+  console.log(data);
+});
 
-console.log('connString: ', connString)
+//console.log('connString: ', connString)
 
 const app = express()
 app.use(cors())
@@ -52,12 +42,12 @@ app.use(express.json())
 app.get('/', (req, res) => {
   res.json('Node.js, Express, and Postgres API')
 })
-app.post('/signin', (req, res) => { signin(req, res, pool, bcrypt) })
-app.post('/register', (req, res) => { register(req, res, pool, bcrypt) })
+app.post('/signin', (req, res) => { handleSignin(req, res, db, bcrypt) })
+app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) })
 app.post('/recipes', (req, res) => { getRecipes(req, res) })
-app.post('/saverecipes', (req, res) => { saveUserRecipes(req, res, pool) })
-app.post('/checkrecipe', (req, res) => { recipeSaved(req, res, pool) })
-app.post('/userrecipes', (req, res) => { getUserRecipes(req, res, pool) })
+app.post('/saverecipes', (req, res) => { saveUserRecipes(req, res, db) })
+app.post('/checkrecipe', (req, res) => { checkIfRecipeExists(req, res, db) })
+app.post('/userrecipes', (req, res) => { handleUserRecipes(req, res, db) })
 //app.get('/users', (req, res) => { getUsers(req, res, pool) })
 //app.get('/users/:id', (req, res) => { getUserById(req, res, pool) })
 //app.put('/users/:id', (req, res) => { updateUser(req, res, pool) })
@@ -67,28 +57,3 @@ app.listen(process.env.PORT || 3000, ()=> {
 	console.log(`app is running on port ${process.env.PORT || 3000}`); 
 })
 
-
-
-
-
-
-/*
-Replace this:
-
-app.use(bodyparser.urlencoded({extended: false}));
-app.use(bodyparser.json());
-
-for this:
-
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
-_________________________________________________ 
-Just a heads up that in the next lecture I am 
-using req.header inside of a console.log to 
-retrieve the header data in a GET route. Depending
-on which version of express.js you use, (a more 
-recent version has changed the syntax) it now is
-req.headers. req.header will only return the 
-function declaration.
-
-*/

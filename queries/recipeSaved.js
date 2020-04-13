@@ -1,15 +1,18 @@
-const recipeSaved = (request, response, pool) => {
+const checkIfRecipeExists = (request, response, db) => {
 	const { user_id, title } = request.body
-
-	pool.query('SELECT EXISTS (SELECT * FROM recipes WHERE (title = $1 AND user_id = $2))', 
-		[title, user_id], (error, results) => {
-		if (error) {
-			throw error
-		} 
-		response.json(results.rows[0].exists)
-	})	
+	db.select('*').from('recipes')
+		.where('user_id', '=', user_id)
+		.andWhere('title', '=', title)
+		.then(userRecipesList => {
+			if (userRecipesList.length === 0) {
+				return response.json(false)
+			} else {
+				return response.json(true)
+			}
+		})
+		.catch(err => response.status(400).json('Unable to connect to database'))
 }
 
 module.exports = {
-  recipeSaved
+  checkIfRecipeExists
 }
