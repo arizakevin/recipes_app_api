@@ -13,7 +13,7 @@ const { handleUserRecipes } = require('./queries/userRecipes')
 //const { getUserById } = require('./queries/getUserById')
 //const { updateUser } = require('./queries/updateUser')
 //const { deleteUser } = require('./queries/deleteUser')
-
+/*
 const db = knex({
   client: 'pg',
   connection: {
@@ -21,10 +21,14 @@ const db = knex({
     user : 'me',
     password : 'password',
     database : 'recipes_app_db'
-    /*
+  }
+});
+*/
+const db = knex({
+  client: 'pg',
+  connection: {
     connectionString: process.env.DATABASE_URL, 
     ssl: true
-    */
   }
 });
 
