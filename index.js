@@ -28,12 +28,8 @@ const db = knex({
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL, 
-    ssl: true,
+    ssl: true
   }
-});
-
-db.select('*').from('users').then(data => {
-  console.log(data);
 });
 
 //console.log('connString: ', connString)
@@ -44,7 +40,12 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.json('Node.js, Express, and Postgres API')
+  db.select('*').from('users')
+    .then(data => {
+      console.log(data);
+      res.json('Connected to database. Users: ', data)
+    .catch(error => res.json("Couldn't connect to database. Error:", error))
+  });
 })
 app.post('/signin', (req, res) => { handleSignin(req, res, db, bcrypt) })
 app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) })
