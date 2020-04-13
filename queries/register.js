@@ -22,12 +22,12 @@ const handleRegister = (request, response, db, bcrypt) => {
 					.then(user => {
 						response.json(user[0]);
 					})
-					.catch(err => response.status(400).json('Unable to register'))
+					.catch(err => response.status(400).json('Unable to register (inner)'))
 			})
 			.then(trx.commit)
 			.catch(trx.rollback)
 		})
-		.catch(err => response.status(400).json('Unable to register'))
+		.catch(err => response.status(400).json('Unable to register (outer)'))
 }
 
 module.exports = {
