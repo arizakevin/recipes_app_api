@@ -14,7 +14,19 @@ const db = knex({
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL, 
-    ssl: true
+    sslmode: 'require'
+  },
+  pool: {
+    min: 0,
+    max: 7,
+    afterCreate: (conn, done) => {
+      conn.query('SET timezone="UTC";', (err)=>{
+        if (err) {
+          console.log(err)
+        }
+        done(err, conn)
+      })
+    }
   }
 });
 
