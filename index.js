@@ -52,21 +52,21 @@ app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.get('/', (request, response) => {
   db.select('*').from('users')
     .then(data => {
       console.log(data);
-      res.json('Connected to database. Users: ', data)
+      response.json('Connected to database. Users: ', data)
     })
-    .catch(error => res.json("Couldn't connect to database. Error:", error))
+    .catch(error => response.status(400).json("Couldn't connect to database. Error:", error))
 })
 
-app.post('/signin', (req, res) => { handleSignin(req, res, db, bcrypt) })
-app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) })
-app.post('/recipes', (req, res) => { getRecipes(req, res) })
-app.post('/saverecipes', (req, res) => { saveUserRecipes(req, res, db) })
-app.post('/checkrecipe', (req, res) => { checkIfRecipeExists(req, res, db) })
-app.post('/userrecipes', (req, res) => { handleUserRecipes(req, res, db) })
+app.post('/signin', (request, response) => { handleSignin(request, response, db, bcrypt) })
+app.post('/register', (request, response) => { handleRegister(request, response, db, bcrypt) })
+app.post('/recipes', (request, response) => { getRecipes(request, response) })
+app.post('/saverecipes', (request, response) => { saveUserRecipes(request, response, db) })
+app.post('/checkrecipe', (request, response) => { checkIfRecipeExists(request, response, db) })
+app.post('/userrecipes', (request, response) => { handleUserRecipes(request, response, db) })
 //app.get('/users', (req, res) => { getUsers(req, res, pool) })
 //app.get('/users/:id', (req, res) => { getUserById(req, res, pool) })
 //app.put('/users/:id', (req, res) => { updateUser(req, res, pool) })
