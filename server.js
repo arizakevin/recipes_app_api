@@ -55,7 +55,7 @@ app.get('/db', (request, response) => {
 })
 
 app.get('/', (request, response) => {
-  response.json('The server is working!')
+  response.json('The server is working! Environment variables: ', process.env)
 })
 
 app.post('/signin', (request, response) => { handleSignin(request, response, db, bcrypt) })
