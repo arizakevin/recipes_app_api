@@ -32,10 +32,13 @@ var db = knex({
   }
 });
 */
+const db_url = process.env.DATABASE_URL;
+const port = process.env.PORT;
+
 const db = knex({
   client: 'pg',
   connection: {
-    connectionString: process.env.CONN_STRING, 
+    connectionString: db_url, 
     ssl: true
   }
 });
@@ -74,7 +77,7 @@ app.post('/userrecipes', (request, response) => { handleUserRecipes(request, res
 //app.put('/users/:id', (req, res) => { updateUser(req, res, pool) })
 //app.delete('/users/:id', (req, res) => { deleteUser(req, res, pool) })
 
-app.listen(process.env.DB_PORT || 3000, ()=> { 
-	console.log(`app is running on port ${process.env.DB_PORT || 3000}`); 
+app.listen(port || 3000, ()=> { 
+	console.log(`app is running on port ${port || 3000}`); 
 })
 
