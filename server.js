@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bcrypt = require('bcrypt-nodejs')
@@ -20,14 +21,22 @@ const db = knex({
   }
 });
 */
-
+/*
 var db = knex({
   client: 'pg',
   connection: {
-    host : 'ec2-23-20-129-146.compute-1.amazonaws.com',
-    user : 'topkqmieailzpv',
-    password : 'f23047b2cac545630728ce3303bfefe3f0805fdee55a199e111a2e117cf2b023',
-    database : 'd9hte6sosniih'
+    host : '',
+    user : '',
+    password : '',
+    database : ''
+  }
+});
+*/
+const db = knex({
+  client: 'pg',
+  connection: {
+    connectionString: process.env.CONN_STRING, 
+    ssl: true
   }
 });
 
@@ -65,7 +74,7 @@ app.post('/userrecipes', (request, response) => { handleUserRecipes(request, res
 //app.put('/users/:id', (req, res) => { updateUser(req, res, pool) })
 //app.delete('/users/:id', (req, res) => { deleteUser(req, res, pool) })
 
-app.listen(process.env.PORT || 3000, ()=> { 
-	console.log(`app is running on port ${process.env.PORT || 3000}`); 
+app.listen(process.env.DB_PORT || 3000, ()=> { 
+	console.log(`app is running on port ${process.env.DB_PORT || 3000}`); 
 })
 
