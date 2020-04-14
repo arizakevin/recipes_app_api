@@ -1,7 +1,6 @@
 const fetch = require("node-fetch");
-require('dotenv').config({ path: '../.env' })
-const APP_ID = 'cba9219b';
-const APP_KEY = '7e92be1e8a26b78e9edd5ed297fc36ab';
+const APP_ID = process.env.APP_ID;
+const APP_KEY = process.env.APP_KEY;
 
 const getRecipes = (request, response) => {
       fetch(`https://api.edamam.com/search?q=${request.body.query}&app_id=${APP_ID}&app_key=${APP_KEY}`)  

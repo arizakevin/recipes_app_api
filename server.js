@@ -9,22 +9,7 @@ const { getRecipes } = require('./queries/getRecipes')
 const { saveUserRecipes } = require('./queries/saveUserRecipes')
 const { checkIfRecipeExists } = require('./queries/recipeSaved')
 const { handleUserRecipes } = require('./queries/userRecipes')
-
-//let connectionString = process.env.DATABASE_URL;
 /*
-const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: connectionString, 
-    ssl: true
-  }
-});
-*/
-const port = process.env.PORT;
-
-const dotenv = require('dotenv');
-dotenv.config();
-
 var db = knex({
   client: 'pg',
   connection: {
@@ -33,6 +18,13 @@ var db = knex({
     password : process.env.DB_PASS,
     database : process.env.DB_NAME
   }
+});
+*/
+
+const db = knex({
+  client: 'pg',
+  connection: process.env.DATABASE_URL,
+  searchPath: ['knex', 'public'], 
 });
 
 process.on('unhandledRejection', (reason, promise) => {
@@ -55,7 +47,7 @@ app.get('/db', (request, response) => {
 })
 
 app.get('/', (request, response) => {
-  response.json('The server is working! Environment variables: ', process.env)
+  response.json('The server is working!')
 })
 
 app.post('/signin', (request, response) => { handleSignin(request, response, db, bcrypt) })
@@ -69,7 +61,7 @@ app.post('/userrecipes', (request, response) => { handleUserRecipes(request, res
 //app.put('/users/:id', (req, res) => { updateUser(req, res, pool) })
 //app.delete('/users/:id', (req, res) => { deleteUser(req, res, pool) })
 
-app.listen(port || 3000, ()=> { 
-	console.log(`app is running on port ${port || 3000}`); 
+app.listen(process.env.PORT || 3000, ()=> { 
+	console.log(`app is running on port ${process.env.PORT || 3000}`); 
 })
 
