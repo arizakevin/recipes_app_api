@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+require('dotenv').config({ path: '../.env' })
 const APP_ID = 'cba9219b';
 const APP_KEY = '7e92be1e8a26b78e9edd5ed297fc36ab';
 
