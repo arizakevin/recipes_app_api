@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bcrypt = require('bcrypt-nodejs')
@@ -21,25 +20,18 @@ const db = knex({
   }
 });
 */
-/*
+const port = process.env.PORT;
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 var db = knex({
   client: 'pg',
   connection: {
-    host : '',
-    user : '',
-    password : '',
-    database : ''
-  }
-});
-*/
-const db_url = process.env.DATABASE_URL;
-const port = process.env.PORT;
-
-const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: db_url, 
-    ssl: true
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    database : process.env.DB_NAME
   }
 });
 
