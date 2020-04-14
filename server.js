@@ -10,11 +10,24 @@ const { saveUserRecipes } = require('./queries/saveUserRecipes')
 const { checkIfRecipeExists } = require('./queries/recipeSaved')
 const { handleUserRecipes } = require('./queries/userRecipes')
 
+//let connectionString = process.env.DATABASE_URL;
+/*
 const db = knex({
   client: 'pg',
   connection: {
-    connectionString: process.env.DATABASE_URL, 
+    connectionString: connectionString, 
     ssl: true
+  }
+});
+*/
+
+var db = knex({
+  client: 'pg',
+  connection: {
+    host : 'ec2-23-20-129-146.compute-1.amazonaws.com',
+    user : 'topkqmieailzpv',
+    password : 'f23047b2cac545630728ce3303bfefe3f0805fdee55a199e111a2e117cf2b023',
+    database : 'd9hte6sosniih'
   }
 });
 
