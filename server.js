@@ -41,7 +41,7 @@ app.get('/db', (request, response) => {
   db.select('*').from('users')
     .then(data => {
       console.log(data);
-      response.json('Connected to database. Users: ', data)
+      response.status(200).json('Connected to database. Users: ', data)
     })
     .catch(error => response.status(400).json("Couldn't connect to database. Error:", error))
 })
