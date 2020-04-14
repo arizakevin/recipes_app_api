@@ -25,6 +25,8 @@ const saveUserRecipes = (request, response, db) => {
 			} else {
 				return db('recipes')
 					.returning('*')
+					.where('user_id', '=', user_id)
+					.andWhere('title', '=', title)
 					.del()
 					.then(resp => {
 						console.log('Recipe already exists. Deleting the recipe...')
