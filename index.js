@@ -17,6 +17,8 @@ const db = knex({
     ssl: true
   },
   pool: {
+    min: 0,
+    max: 7,
     afterCreate: function (conn, done) {
       // in this example we use pg driver's connection API
       conn.query('SET timezone="UTC";', function (err) {
@@ -28,6 +30,9 @@ const db = knex({
           conn.query('SELECT set_limit(0.01);', function (err) {
             // if err is not falsy, connection is discarded from pool
             // if connection aquire was triggered by a query the error is passed to query promise
+            if (err) {
+              console.log(err)
+            }
             done(err, conn);
           });
         }
