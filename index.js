@@ -9,21 +9,7 @@ const { getRecipes } = require('./queries/getRecipes')
 const { saveUserRecipes } = require('./queries/saveUserRecipes')
 const { checkIfRecipeExists } = require('./queries/recipeSaved')
 const { handleUserRecipes } = require('./queries/userRecipes')
-//const { getUsers } = require('./queries/getUsers')
-//const { getUserById } = require('./queries/getUserById')
-//const { updateUser } = require('./queries/updateUser')
-//const { deleteUser } = require('./queries/deleteUser')
-/*
-const db = knex({
-  client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : 'me',
-    password : 'password',
-    database : 'recipes_app_db'
-  }
-});
-*/
+
 const db = knex({
   client: 'pg',
   connection: {
@@ -31,8 +17,6 @@ const db = knex({
     ssl: true
   }
 });
-
-//console.log('connString: ', connString)
 
 const app = express()
 app.use(cors())
@@ -44,9 +28,10 @@ app.get('/', (req, res) => {
     .then(data => {
       console.log(data);
       res.json('Connected to database. Users: ', data)
+    })
     .catch(error => res.json("Couldn't connect to database. Error:", error))
-  });
 })
+
 app.post('/signin', (req, res) => { handleSignin(req, res, db, bcrypt) })
 app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) })
 app.post('/recipes', (req, res) => { getRecipes(req, res) })
