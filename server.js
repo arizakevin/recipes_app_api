@@ -23,8 +23,9 @@ var db = knex({
 
 const db = knex({
   client: 'pg',
-  connection: process.env.DATABASE_URL,
-  searchPath: ['knex', 'public'], 
+  connection: {
+    connectionString: process.env.DATABASE_URL
+  }
 });
 
 process.on('unhandledRejection', (reason, promise) => {
