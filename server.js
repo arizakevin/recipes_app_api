@@ -38,7 +38,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/db', (request, response) => {
-  db.select('*').from('users')
+  return db.select('*').from('users')
     .then(data => {
       console.log(data);
       response.status(200).json('Connected to database. Users: ', data)
