@@ -15,18 +15,6 @@ const db = knex({
   connection: {
     connectionString: process.env.DATABASE_URL, 
     sslmode: 'require'
-  },
-  pool: {
-    min: 0,
-    max: 7,
-    afterCreate: (conn, done) => {
-      conn.query('SET timezone="UTC";', (err)=>{
-        if (err) {
-          console.log(err)
-        }
-        done(err, conn)
-      })
-    }
   }
 });
 
