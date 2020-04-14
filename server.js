@@ -20,7 +20,6 @@ var db = knex({
   }
 });
 */
-
 const db = knex({
   client: 'pg',
   connection: {
