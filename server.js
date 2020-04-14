@@ -37,15 +37,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.get('/db', (request, response) => {
-  return db.select('*').from('users')
-    .then(data => {
-      console.log(data);
-      response.status(200).json('Connected to database. Users: ', data)
-    })
-    .catch(error => response.status(400).json("Couldn't connect to database. Error:", error))
-})
-
 app.get('/', (request, response) => {
   response.json('The server is working!')
 })
