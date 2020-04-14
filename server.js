@@ -15,31 +15,7 @@ const db = knex({
   connection: {
     connectionString: process.env.DATABASE_URL, 
     ssl: true
-  },
-  pool: {
-    min: 0,
-    max: 7,
-    afterCreate: function (conn, done) {
-      // in this example we use pg driver's connection API
-      conn.query('SET timezone="UTC";', function (err) {
-        if (err) {
-          // first query failed, return error and don't try to make next query
-          done(err, conn);
-        } else {
-          // do the second query...
-          conn.query('SELECT set_limit(0.01);', function (err) {
-            // if err is not falsy, connection is discarded from pool
-            // if connection aquire was triggered by a query the error is passed to query promise
-            if (err) {
-              console.log(err)
-            }
-            done(err, conn);
-          });
-        }
-      });
-    }
-  },
-  acquireConnectionTimeout: 10000
+  }
 });
 
 process.on('unhandledRejection', (reason, promise) => {
@@ -48,9 +24,9 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 const app = express()
-app.use(cors())
-app.use(express.urlencoded({extended: false}))
+
 app.use(express.json())
+app.use(cors())
 
 app.get('/db', (request, response) => {
   db.select('*').from('users')
