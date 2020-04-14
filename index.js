@@ -18,6 +18,11 @@ const db = knex({
   }
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Application specific logging, throwing an error, or other logic here
+});
+
 const app = express()
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
