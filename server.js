@@ -52,13 +52,17 @@ app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
-app.get('/', (request, response) => {
+app.get('/db', (request, response) => {
   db.select('*').from('users')
     .then(data => {
       console.log(data);
       response.json('Connected to database. Users: ', data)
     })
     .catch(error => response.status(400).json("Couldn't connect to database. Error:", error))
+})
+
+app.get('/', (request, response) => {
+  response.json('The server is working!')
 })
 
 app.post('/signin', (request, response) => { handleSignin(request, response, db, bcrypt) })
