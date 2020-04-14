@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('../dotenv').config() 
 const fetch = require("node-fetch");
 const APP_ID = process.env.APP_ID;
 const APP_KEY = process.env.APP_KEY;
